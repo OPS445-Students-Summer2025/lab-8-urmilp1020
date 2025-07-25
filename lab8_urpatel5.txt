@@ -1,0 +1,27 @@
+
+PLAY [vmlab] *******************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [vmlab]
+
+TASK [Ensure Apache is updated to latest] **************************************
+changed: [vmlab]
+
+TASK [Ensure EPEL repo is installed] *******************************************
+changed: [vmlab]
+
+TASK [Remove tree package if present] ******************************************
+ok: [vmlab]
+
+TASK [Set hostname to Seneca ID] ***********************************************
+changed: [vmlab]
+
+TASK [Create user with sudo access] ********************************************
+changed: [vmlab]
+
+TASK [Authorize SSH key for new user] ******************************************
+fatal: [vmlab]: FAILED! => {"msg": "An unhandled exception occurred while running the lookup plugin 'file'. Error was a <class 'ansible.errors.AnsibleError'>, original message: could not locate file in lookup: ~/.ssh/id_rsa.pub. could not locate file in lookup: ~/.ssh/id_rsa.pub"}
+
+PLAY RECAP *********************************************************************
+vmlab                      : ok=6    changed=4    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+
