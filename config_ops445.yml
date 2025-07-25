@@ -1,0 +1,46 @@
+---
+- hosts: vmlab
+  become: yes
+  vars:
+    seneca_id: urpatel5
+  tasks:
+    - name: Ensure Apache is updated to latest
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Ensure EPEL repo is installed
+      yum:
+        name: epel-release
+        state: present
+
+    - name: Remove tree package if present
+      yum:
+        name: tree
+        state: absent
+
+    - name: Set hostname to Seneca ID
+      hostname:
+        name: "{{ seneca_id }}"
+
+    - name: Create user with sudo access
+      user:
+        name: "{{ seneca_id }}"
+        groups: wheel
+        shell: /bin/bash
+        state: present
+
+    - name: Authorize SSH key for new user
+      authorized_key:
+        user: "{{ seneca_id }}"
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+    - name: Create directory structure for labs
+      file:
+        path: "/home/{{ seneca_id }}/ops445/lab{{ item }}"
+        state: directory
+        owner: "{{ seneca_id }}"
+        mode: '0755'
+      loop: "{{ range(1,9) | list }}"
+
